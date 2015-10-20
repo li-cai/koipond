@@ -5,6 +5,6 @@
 var app = app || {};
 
 window.onload = function() {
-    app.main.koi = app.koi;
+    app.main.koi = app.koiModule;
     app.main.init();
 }
