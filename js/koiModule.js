@@ -8,19 +8,24 @@
 var app = app || {};
 
 /**
- * Define the .sound module and immediately invoke it in an IIFE
+ * Define the koi module and immediately invoke it in an IIFE
  */
 app.koiModule = (function() {
     var kois = [],
         MAX_SPEED = 2,
-        CANVAS_WIDTH,
-        CANVAS_HEIGHT,
-        ctx;
+        canvasWidth,
+        canvasHeight,
+        canvas,
+        ctx,
+        mousePosition = {x: 500, y: 200};
 
-    function init(canvas, context) {
+    function init(canvas0, context) {
         ctx = context;
-        CANVAS_WIDTH = canvas.width;
-        CANVAS_HEIGHT = canvas.height;
+        canvas = canvas0;
+        canvasWidth = canvas.width;
+        canvasHeight = canvas.height;
+
+        canvas.onmousemove = handleMouseMove.bind(this);
 
         kois = makeKoi(8);
     }
@@ -30,7 +35,7 @@ app.koiModule = (function() {
             koi, draw, drawShadow, move, seekCenter, i;
 
         seekCenter = function() {
-            var center = {x: CANVAS_WIDTH / 2, y: CANVAS_HEIGHT / 2};
+            var center = {x: canvasWidth / 2, y: canvasHeight / 2};
             var displacement = {
                 x: center.x - this.x,
                 y: center.y - this.y,
@@ -43,7 +48,7 @@ app.koiModule = (function() {
 
             ctx.translate(this.x, this.y);
             ctx.rotate(this.direction);
-            ctx.scale(2, 1);
+            ctx.scale(2.5, 1);
 
             ctx.beginPath();
             ctx.arc(0, 0, this.radius, 0, Math.PI * 2, false);
@@ -99,11 +104,11 @@ app.koiModule = (function() {
         for (i = 0; i < num; i++) {
             koi = {};
 
-            koi.x = getRandom(0, CANVAS_WIDTH);
-            koi.y = getRandom(0, CANVAS_HEIGHT);
+            koi.x = getRandom(0, canvasWidth);
+            koi.y = getRandom(0, canvasHeight);
 
             koi.radius = 15;
-            koi.mass = 400;
+            koi.mass = 300;
             koi.velocity = {x: getRandom(-2, 2), y: getRandom(-2, 2)};
             koi.acceleration = {x: 0, y: 0};
             koi.direction = 0;
@@ -121,6 +126,9 @@ app.koiModule = (function() {
 
     function drawKoi() {
         var koi, i;
+
+        canvasWidth = canvas.width;
+        canvasHeight = canvas.height;
 
         for (i = 0; i < kois.length; i++) {
             koi = kois[i];
@@ -140,6 +148,10 @@ app.koiModule = (function() {
             koi = kois[i];
             koi.move(dt);
         }
+    }
+
+    function handleMouseMove(e) {
+        mousePosition = getMouse(e);
     }
 
     return {
