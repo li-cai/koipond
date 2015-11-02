@@ -12,112 +12,28 @@ var app = app || {};
  */
 app.koiModule = (function() {
     var kois = [],
-        MAX_SPEED = 2,
+        koiColorA = 'coral',
         canvasWidth,
         canvasHeight,
         canvas,
-        ctx,
-        mousePosition = {x: 500, y: 200};
+        emitter;
 
-    function init(canvas0, context) {
-        ctx = context;
-        canvas = canvas0;
+    function init(Emitter) {
+        canvas = document.querySelector('canvas');
         canvasWidth = canvas.width;
         canvasHeight = canvas.height;
-
-        canvas.onmousemove = handleMouseMove.bind(this);
+        emitter = Emitter;
 
         kois = makeKoi(8);
     }
 
     function makeKoi(num) {
         var koiArray = [],
-            koi, draw, drawShadow, move, seekCenter, i;
-
-        seekCenter = function() {
-            var center = {x: canvasWidth / 2, y: canvasHeight / 2};
-            var displacement = {
-                x: center.x - this.x,
-                y: center.y - this.y,
-            }
-            return displacement;
-        }
-
-        draw = function() {
-            ctx.save();
-
-            ctx.translate(this.x, this.y);
-            ctx.rotate(this.direction);
-            ctx.scale(2.5, 1);
-
-            ctx.beginPath();
-            ctx.arc(0, 0, this.radius, 0, Math.PI * 2, false);
-            ctx.closePath();            
-            ctx.fillStyle = 'coral';
-            ctx.fill();
-
-            ctx.restore();
-
-            // DEBUG
-            // ctx.beginPath();
-            // ctx.moveTo(this.x, this.y);
-            // ctx.lineTo(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
-            // ctx.closePath();
-            // ctx.strokeStyle = 'red';
-            // ctx.stroke();
-            //ctx.restore();
-        }
-
-        drawShadow = function() {
-            ctx.save()
-            ctx.translate(this.x + 40, this.y + 60);
-            ctx.rotate(this.direction);
-            ctx.scale(2, 1);
-            ctx.beginPath();
-            ctx.arc(0, 0, this.radius + 2, 0, Math.PI * 2, false);
-            ctx.closePath();
-            ctx.globalAlpha = 0.3;
-            ctx.fillStyle = 'gray';
-            ctx.fill();
-            ctx.restore();
-        }
-
-        move = function(dt) {
-            var force = this.seekCenter();
-            this.acceleration.x = force.x / this.mass;
-            this.acceleration.y = force.y / this.mass;
-            
-            this.velocity.x += this.acceleration.x * dt;
-            this.velocity.y += this.acceleration.y * dt;
-            this.velocity.x = Math.min(this.velocity.x, MAX_SPEED);
-            this.velocity.y = Math.min(this.velocity.y, MAX_SPEED);
-
-            this.x += this.velocity.x;
-            this.y += this.velocity.y;
-
-            this.direction = Math.atan2(this.velocity.y, this.velocity.x);
-
-            this.acceleration.x = 0;
-            this.acceleration.y = 0;
-        }
+            koi, i;
 
         for (i = 0; i < num; i++) {
-            koi = {};
-
-            koi.x = getRandom(0, canvasWidth);
-            koi.y = getRandom(0, canvasHeight);
-
-            koi.radius = 15;
-            koi.mass = 300;
-            koi.velocity = {x: getRandom(-2, 2), y: getRandom(-2, 2)};
-            koi.acceleration = {x: 0, y: 0};
-            koi.direction = 0;
-            koi.seekCenter = seekCenter;
-            koi.draw = draw;
-            koi.drawShadow = drawShadow;
-            koi.move = move;
-
-            Object.seal(koi);
+            koi = new app.Koi(koiColorA);
+            koi.initEmitter(emitter);
             koiArray.push(koi);
         }
 
@@ -125,38 +41,36 @@ app.koiModule = (function() {
     }
 
     function drawKoi() {
-        var koi, i;
+        var i;
+        for (i = 0; i < kois.length; i++) {
+            kois[i].draw();
+        }
 
         canvasWidth = canvas.width;
         canvasHeight = canvas.height;
+    }
 
+    function drawShadow() {
+        var i;
         for (i = 0; i < kois.length; i++) {
-            koi = kois[i];
-            koi.drawShadow();
-        }
-
-        for (i = 0; i < kois.length; i++) {
-            koi = kois[i];
-            koi.draw();
-        }
+            kois[i].drawShadow();
+        } 
     }
 
     function moveKoi(dt) {
-        var koi, i;
+        var center = {x: canvasWidth / 2, y: canvasHeight / 2},
+            koi, i;
 
         for (i = 0; i < kois.length; i++) {
             koi = kois[i];
-            koi.move(dt);
+            koi.move(dt, center);
         }
-    }
-
-    function handleMouseMove(e) {
-        mousePosition = getMouse(e);
     }
 
     return {
         init: init,
         drawKoi: drawKoi,
+        drawShadow: drawShadow,
         moveKoi: moveKoi,
-    }
+    };
 }());

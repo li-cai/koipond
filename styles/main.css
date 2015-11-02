@@ -1,9 +1,5 @@
 html {
-    background-image: url('../media/bg1.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-attachment: fixed;
+    background-color: MediumTurquoise;
 }
 
 html, body {
@@ -12,7 +8,83 @@ html, body {
     margin: 0;
 }
 
+body {
+    font-family: 'Dosis', sans-serif;
+}
+
+.container {
+    position: relative;
+}
+
 canvas {
     display: block;
     margin: auto;
+}
+
+h1 {
+    font-size: 40px;
+}
+
+h2 {
+    padding-top: 10px;
+    font-size: 26px;
+    font-weight: 400;
+}
+
+.welcome {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    width: 435px;
+    padding: 40px 100px 80px;
+    background-color: rgba(255, 255, 255, 0.3);
+    text-align: center;
+}
+
+.welcome.is-hidden {
+    display: none;
+}
+
+.instructions {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 14px;
+}
+
+#resetIcon {
+    cursor: pointer;
+    width: 40px;
+}
+
+#resetIcon:active {
+    opacity: 0.8;
+}
+
+#questionIcon {
+    font-size: 50px;
+    text-align: center;
+    margin: 0 0 12px;
+    color: white;
+    cursor: pointer;
+}
+
+.doc {
+    height: 280px;
+    text-align: left;
+    overflow-y: auto;
+}
+
+.audioControls {
+    display: none;
+}
+
+.signature {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    padding: 20px 25px;
+    opacity: 0.6;
+    color: white;
 }

@@ -2,13 +2,8 @@
         
 "use strict";
 
-// http://stackoverflow.com/questions/2212604/javascript-check-mouse-clicked-inside-the-circle-or-polygon
-// using 'distance squared' here, why?
-// I is for "Instance"
-function pointInsideCircle(x, y, I) {
-    var dx = x - I.x;
-    var dy = y - I.y;
-    return dx * dx + dy * dy <= I.radius * I.radius;
+function getMagnitude(vector) {
+    return Math.sqrt(Math.pow(vector.x, 2) + Math.pow(vector.y, 2));
 }
 
 function circlesIntersect(c1, c2) {
@@ -31,20 +26,7 @@ function getRandom(min, max) {
 }
 
 function makeColor(red, green, blue, alpha) {
-    var color='rgba(' + red + ',' + green + ',' + blue + ', ' + alpha + ')';
-    return color;
-}
-
-// Function Name: getRandomColor()
-// returns a random color of alpha 1.0
-// http://paulirish.com/2009/random-hex-color-code-snippets/
-function getRandomColor() {
-    var red = Math.round(Math.random()*200+55);
-    var green = Math.round(Math.random()*200+55);
-    var blue = Math.round(Math.random()*200+55);
-    var color = 'rgb('+red+','+green+','+blue+')';
-    // OR   if you want to change alpha
-    // var color='rgba('+red+','+green+','+blue+',0.50)'; // 0.50
+    var color = 'rgba(' + red + ',' + green + ',' + blue + ', ' + alpha + ')';
     return color;
 }
 
@@ -95,29 +77,15 @@ function loadImagesWithCallback(sources, callback) {
 
 
 /*
-Function Name: clamp(val, min, max)
-Author: Web - various sources
-Return Value: the constrained value
-Description: returns a value that is
-constrained between min and max (inclusive) 
+    Function Name: clamp(val, min, max)
+    Author: Web - various sources
+    Return Value: the constrained value
+    Description: returns a value that is
+    constrained between min and max (inclusive) 
 */
 function clamp(val, min, max) {
     return Math.max(min, Math.min(max, val));
 }
-
- // FULL SCREEN MODE
-function requestFullscreen(element) {
-    if (element.requestFullscreen) {
-      element.requestFullscreen();
-    } else if (element.mozRequestFullscreen) {
-      element.mozRequestFullscreen();
-    } else if (element.mozRequestFullScreen) { // camel-cased 'S' was changed to 's' in spec
-      element.mozRequestFullScreen();
-    } else if (element.webkitRequestFullscreen) {
-      element.webkitRequestFullscreen();
-    }
-    // .. and do nothing if the method is not supported
-};
 
 // This gives Array a randomElement() method
 Array.prototype.randomElement = function() {

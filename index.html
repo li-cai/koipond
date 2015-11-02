@@ -2,17 +2,42 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>Koi Pond</title>
+    <title>Koi no Ike</title>
 
     <link href="styles/main.css" rel="stylesheet" type="text/css">
 
+    <link href='https://fonts.googleapis.com/css?family=Dosis:400,300' rel='stylesheet' type='text/css'>
+
     <script src='js/utilities.js'></script>
     <script src='js/loader.js'></script>
+    <script src='js/sound.js'></script>
+    <script src='js/keys.js'></script>
+    <script src='js/emitter.js'></script>
     <script src='js/main.js'></script>
     <script src='js/koiModule.js'></script>
+    <script src='js/Koi.js'></script>
+    <script src='js/sakuraModule.js'></script>
+    <script src='js/Sakura.js'></script>
 </head>
 <body>
-    <canvas width="1200" height="500">
-    </canvas>
+    <div class="container">
+        <canvas width="1200" height="500">
+        </canvas>
+        <div class="welcome">
+            <h1>コイの池</h1>
+            <h2>Welcome to Koi no Ike</h2>
+            <div>Shift + Drag Mouse to Generate Cherry Blossoms</div>
+        </div>
+        <div class="instructions">
+            <p id="questionIcon">?</p>
+            <img id="resetIcon" src="media/reset-icon.png" />
+        </div>
+        <div class="audioControls">
+            <audio id="bgAudio" src="media/piano.mp3" controls loop></audio>
+        </div>
+        <div class="signature">
+            Created by Cailin Li
+        </div>
+    </div>
 </body>
 </html>
